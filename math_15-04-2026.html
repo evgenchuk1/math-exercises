@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>תרגילי חשבון לכיתה ה׳ — 15/04/2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0ebe3;--paper:#fffdf8;--ink:#1c1309;--muted:#7a6a56;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Heebo,Arial,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(circle at 18% 22%,rgba(59,130,246,.08) 0%,transparent 50%),
+             radial-gradient(circle at 82% 72%,rgba(16,185,129,.07) 0%,transparent 50%),
+             radial-gradient(circle at 50% 50%,rgba(245,158,11,.04) 0%,transparent 60%);
+  pointer-events:none;z-index:0;}
+.app{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:30px 16px 70px;}
+
+/* ── Header ── */
+.hdr{text-align:center;margin-bottom:32px;}
+.hdr .emoji-row{font-size:2.6rem;margin-bottom:10px;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.hdr h1{font-size:clamp(1.7rem,5vw,2.5rem);font-weight:900;line-height:1.1;}
+.hdr h1 span{background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+              -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hdr .sub{color:var(--muted);font-size:1rem;font-weight:500;margin-top:6px;}
+
+/* ── Progress ── */
+.prog-wrap{background:rgba(255,255,255,.65);backdrop-filter:blur(10px);
+           border-radius:18px;padding:16px 22px;margin-bottom:30px;
+           box-shadow:0 2px 16px rgba(0,0,0,.08);}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.prog-title{font-size:.85rem;font-weight:700;color:var(--muted);}
+.prog-count{font-size:.85rem;font-weight:800;color:var(--ink);}
+.prog-bg{height:10px;background:rgba(0,0,0,.08);border-radius:20px;overflow:hidden;}
+.prog-bar{height:100%;width:0%;border-radius:20px;transition:width .45s ease;
+          background:linear-gradient(90deg,#3b82f6,#8b5cf6,#10b981);}
+
+/* ── Sections ── */
+.sec{margin-bottom:30px;border-radius:18px;overflow:hidden;
+      box-shadow:0 6px 28px rgba(0,0,0,.09);}
+.sec-hdr{color:#fff;padding:14px 22px;font-size:1.05rem;font-weight:800;
+          letter-spacing:.3px;}
+
+/* ── Cards grid ── */
+.cards-grid{background:var(--paper);padding:14px;
+             display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(max-width:580px){.cards-grid{grid-template-columns:1fr;}}
+
+/* ── Card ── */
+.card{background:var(--cp);border:1.5px solid color-mix(in srgb,var(--cc) 22%,#fff);
+       border-radius:14px;padding:14px 13px;transition:box-shadow .2s;}
+.card:hover{box-shadow:0 4px 20px rgba(0,0,0,.1);}
+.card.correct{background:#f0fdf4!important;border-color:#86efac!important;}
+.card.wrong{background:#fff1f2!important;border-color:#fca5a5!important;}
+.card-badge{display:inline-block;font-size:.72rem;font-weight:800;
+             padding:3px 10px;border-radius:20px;margin-bottom:9px;
+             background:var(--cl);color:var(--cc);}
+.card-q{font-size:.96rem;font-weight:600;line-height:1.6;margin-bottom:10px;}
+.ex-svg{max-width:100%;display:block;margin:6px auto 10px;}
+
+/* ── Fractions ── */
+.frac{display:inline-flex;flex-direction:column;align-items:center;
+       vertical-align:middle;margin:0 3px;line-height:1.15;}
+.fn{border-bottom:1.5px solid;padding:0 4px 1px;font-size:.85em;line-height:1.3;}
+.fd{padding:1px 4px 0;font-size:.85em;line-height:1.3;}
+
+/* ── Inputs ── */
+input[type=text]{padding:9px 11px;border:1.5px solid #d1d5db;border-radius:10px;
+                  font-family:Heebo,Arial,sans-serif;font-size:.95rem;font-weight:700;
+                  text-align:center;background:#fff;color:var(--ink);width:100%;
+                  transition:border-color .2s,box-shadow .2s;}
+input[type=text]:focus{outline:none;border-color:var(--cc);
+                        box-shadow:0 0 0 3px color-mix(in srgb,var(--cc) 18%,transparent);}
+.inp-row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+.inp-row input{flex:1;}
+.multi-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.inp-grp{display:flex;flex-direction:column;gap:3px;flex:1;min-width:75px;}
+.inp-grp label{font-size:.72rem;font-weight:700;color:var(--muted);}
+.sym-row{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:9px;}
+.sym-btn{padding:9px 16px;border:1.5px solid #d1d5db;border-radius:10px;background:#fff;
+          font-size:1.1rem;font-weight:800;cursor:pointer;transition:all .15s;color:var(--ink);}
+.sym-btn:hover{background:var(--cl);border-color:var(--cc);}
+.sym-btn.sel{background:var(--cc);color:#fff;border-color:var(--cc);
+              box-shadow:0 3px 10px rgba(0,0,0,.18);}
+.chk-btn{padding:9px 18px;background:var(--cc);color:#fff;border:none;
+          border-radius:10px;font-family:Heebo,Arial,sans-serif;font-size:.88rem;
+          font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.chk-btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.chk-btn:active{transform:translateY(0);}
+.fb{min-height:22px;font-size:.82rem;font-weight:700;margin-top:7px;
+     line-height:1.4;padding:0 2px;}
+.fb.ok{color:#15803d;}
+.fb.err{color:#dc2626;}
+
+/* ── Finish button ── */
+.finish-wrap{text-align:center;margin-top:38px;}
+.finish-btn{padding:17px 54px;background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+             color:#fff;border:none;border-radius:50px;
+             font-family:Heebo,Arial,sans-serif;font-size:1.2rem;font-weight:900;
+             cursor:pointer;box-shadow:0 8px 32px rgba(99,102,241,.38);
+             transition:all .25s;letter-spacing:.4px;}
+.finish-btn:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(99,102,241,.48);}
+
+/* ── Score modal ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);
+          z-index:200;align-items:center;justify-content:center;}
+.overlay.open{display:flex;}
+.modal{background:var(--paper);border-radius:28px;padding:42px 38px;
+        text-align:center;max-width:440px;width:92%;
+        box-shadow:0 28px 80px rgba(0,0,0,.3);
+        animation:popIn .42s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.score-emoji{font-size:3rem;margin-bottom:4px;}
+.score-num{font-size:5.5rem;font-weight:900;line-height:1;
+            background:linear-gradient(135deg,#1d4ed8,#7c3aed);
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.score-grade{font-size:1.6rem;font-weight:800;margin:6px 0 3px;}
+.score-stats{color:var(--muted);font-size:.95rem;font-weight:500;}
+.score-msg{margin-top:18px;padding:16px 20px;border-radius:14px;
+            font-size:.95rem;font-weight:600;line-height:1.65;}
+.modal-close{margin-top:22px;padding:12px 38px;background:var(--ink);color:#fff;
+              border:none;border-radius:50px;font-family:Heebo,Arial,sans-serif;
+              font-size:.95rem;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.modal-close:hover{opacity:.82;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hdr">
+    <div class="emoji-row">📐 ✏️ 🔢</div>
+    <h1>תרגילי חשבון <span>לכיתה ה׳</span></h1>
+    <div class="sub">15/04/2026 &nbsp;•&nbsp; ענה על כל השאלות וקבל ציון!</div>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span class="prog-title">התקדמות</span>
+      <span class="prog-count"><span id="pnum">0</span>&thinsp;/&thinsp;50 נבדקו</span>
+    </div>
+    <div class="prog-bg"><div class="prog-bar" id="pbar"></div></div>
+  </div>
+
+  
+        <section class="sec">
+          <div class="sec-hdr" style="background:#1d4ed8;">➕&nbsp; חיבור וחיסור עד מיליון</div>
+          <div class="cards-grid">
+          <div class="card" id="card0" style="--cc:#1d4ed8;--cl:#dbeafe;--cp:#eff6ff;">
+            <div class="card-badge">➕ 1</div>
+            <div class="card-q">163&thinsp;110&thinsp;&minus;&thinsp;94&thinsp;110&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v0" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(0)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb0"></div>
+          </div>
+          <div class="card" id="card1" style="--cc:#1d4ed8;--cl:#dbeafe;--cp:#eff6ff;">
+            <div class="card-badge">➕ 2</div>
+            <div class="card-q">362&thinsp;996&thinsp;+&thinsp;139&thinsp;126&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v1" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(1)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb1"></div>
+          </div>
+          <div class="card" id="card2" style="--cc:#1d4ed8;--cl:#dbeafe;--cp:#eff6ff;">
+            <div class="card-badge">➕ 3</div>
+            <div class="card-q">313&thinsp;736&thinsp;+&thinsp;503&thinsp;850&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v2" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(2)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb2"></div>
+          </div>
+          <div class="card" id="card3" style="--cc:#1d4ed8;--cl:#dbeafe;--cp:#eff6ff;">
+            <div class="card-badge">➕ 4</div>
+            <div class="card-q">242&thinsp;160&thinsp;&minus;&thinsp;120&thinsp;499&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v3" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(3)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb3"></div>
+          </div></div>
+        </section>
+        <section class="sec">
+          <div class="sec-hdr" style="background:#15803d;">✖&nbsp; כפל ב-2 ספרות</div>
+          <div class="cards-grid">
+          <div class="card" id="card4" style="--cc:#15803d;--cl:#dcfce7;--cp:#f0fdf4;">
+            <div class="card-badge">✖ 1</div>
+            <div class="card-q">9&thinsp;065&thinsp;&times;&thinsp;73&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v4" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(4)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb4"></div>
+          </div>
+          <div class="card" id="card5" style="--cc:#15803d;--cl:#dcfce7;--cp:#f0fdf4;">
+            <div class="card-badge">✖ 2</div>
+            <div class="card-q">4&thinsp;045&thinsp;&times;&thinsp;49&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v5" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(5)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb5"></div>
+          </div>
+          <div class="card" id="card6" style="--cc:#15803d;--cl:#dcfce7;--cp:#f0fdf4;">
+            <div class="card-badge">✖ 3</div>
+            <div class="card-q">925&thinsp;&times;&thinsp;69&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v6" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(6)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb6"></div>
+          </div>
+          <div class="card" id="card7" style="--cc:#15803d;--cl:#dcfce7;--cp:#f0fdf4;">
+            <div class="card-badge">✖ 4</div>
+            <div class="card-q">2&thinsp;939&thinsp;&times;&thinsp;20&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v7" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(7)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb7"></div>
+          </div></div>
+        </section>
+        <section class="sec">
+          <div class="sec-hdr" style="background:#b45309;">➗&nbsp; חילוק</div>
+          <div class="cards-grid">
+          <div class="card" id="card8" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 1</div>
+            <div class="card-q">693&thinsp;&divide;&thinsp;13&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v8a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v8b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(8)">בדוק ✓</button>
+      <div class="fb" id="fb8"></div>
+          </div>
+          <div class="card" id="card9" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 2</div>
+            <div class="card-q">114&thinsp;&divide;&thinsp;9&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v9a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v9b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(9)">בדוק ✓</button>
+      <div class="fb" id="fb9"></div>
+          </div>
+          <div class="card" id="card10" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 3</div>
+            <div class="card-q">2&thinsp;628&thinsp;&divide;&thinsp;4&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v10" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(10)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb10"></div>
+          </div>
+          <div class="card" id="card11" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 4</div>
+            <div class="card-q">566&thinsp;&divide;&thinsp;12&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v11a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v11b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(11)">בדוק ✓</button>
+      <div class="fb" id="fb11"></div>
+          </div>
+          <div class="card" id="card12" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 5</div>
+            <div class="card-q">152&thinsp;&divide;&thinsp;3&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v12a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v12b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(12)">בדוק ✓</button>
+      <div class="fb" id="fb12"></div>
+          </div>
+          <div class="card" id="card13" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 6</div>
+            <div class="card-q">3&thinsp;768&thinsp;&divide;&thinsp;6&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v13" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(13)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb13"></div>
+          </div>
+          <div class="card" id="card14" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 7</div>
+            <div class="card-q">472&thinsp;&divide;&thinsp;3&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v14a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v14b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(14)">בדוק ✓</button>
+      <div class="fb" id="fb14"></div>
+          </div>
+          <div class="card" id="card15" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 8</div>
+            <div class="card-q">3&thinsp;930&thinsp;&divide;&thinsp;5&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v15" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(15)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb15"></div>
+          </div>
+          <div class="card" id="card16" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 9</div>
+            <div class="card-q">922&thinsp;&divide;&thinsp;20&thinsp;=&thinsp;?&thinsp;שארית&thinsp;?</div>
+            
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מנה</label>
+          <input type="text" id="v16a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שארית</label>
+          <input type="text" id="v16b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(16)">בדוק ✓</button>
+      <div class="fb" id="fb16"></div>
+          </div>
+          <div class="card" id="card17" style="--cc:#b45309;--cl:#fef3c7;--cp:#fffbeb;">
+            <div class="card-badge">➗ 10</div>
+            <div class="card-q">7&thinsp;164&thinsp;&divide;&thinsp;9&thinsp;=&thinsp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v17" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(17)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb17"></div>
+          </div></div>
+        </section>
+        <section class="sec">
+          <div class="sec-hdr" style="background:#7c3aed;">½&nbsp; שברים</div>
+          <div class="cards-grid">
+          <div class="card" id="card18" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 1</div>
+            <div class="card-q"><span class="frac"><span class="fn">7</span><span class="fd">12</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">8</span><span class="fd">12</span></span></div>
+            
+            
+      <input type="hidden" id="v18">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(18,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(18,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(18,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(18)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb18"></div>
+          </div>
+          <div class="card" id="card19" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 2</div>
+            <div class="card-q"><span class="frac"><span class="fn">4</span><span class="fd">6</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">1</span><span class="fd">6</span></span></div>
+            
+            
+      <input type="hidden" id="v19">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(19,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(19,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(19,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(19)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb19"></div>
+          </div>
+          <div class="card" id="card20" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 3</div>
+            <div class="card-q"><span class="frac"><span class="fn">3</span><span class="fd">5</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">4</span><span class="fd">5</span></span></div>
+            
+            
+      <input type="hidden" id="v20">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(20,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(20,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(20,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(20)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb20"></div>
+          </div>
+          <div class="card" id="card21" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 4</div>
+            <div class="card-q"><span class="frac"><span class="fn">6</span><span class="fd">8</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">1</span><span class="fd">4</span></span></div>
+            
+            
+      <input type="hidden" id="v21">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(21,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(21,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(21,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(21)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb21"></div>
+          </div>
+          <div class="card" id="card22" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 5</div>
+            <div class="card-q"><span class="frac"><span class="fn">1</span><span class="fd">3</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">1</span><span class="fd">5</span></span></div>
+            
+            
+      <input type="hidden" id="v22">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(22,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(22,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(22,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(22)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb22"></div>
+          </div>
+          <div class="card" id="card23" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 6</div>
+            <div class="card-q"><span class="frac"><span class="fn">4</span><span class="fd">5</span></span>&ensp;_____&ensp;<span class="frac"><span class="fn">3</span><span class="fd">8</span></span></div>
+            
+            
+      <input type="hidden" id="v23">
+      <div class="sym-row">
+        <button class="sym-btn" onclick="setSym(23,this,'&lt;')">&lt;</button>
+        <button class="sym-btn" onclick="setSym(23,this,'=')">=</button>
+        <button class="sym-btn" onclick="setSym(23,this,'&gt;')">&gt;</button>
+        <button class="chk-btn" onclick="check(23)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb23"></div>
+          </div>
+          <div class="card" id="card24" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 7</div>
+            <div class="card-q"><span class="frac"><span class="fn">4</span><span class="fd">6</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">2</span><span class="fd">6</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v24" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(24)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb24"></div>
+          </div>
+          <div class="card" id="card25" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 8</div>
+            <div class="card-q"><span class="frac"><span class="fn">8</span><span class="fd">10</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">4</span><span class="fd">10</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v25" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(25)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb25"></div>
+          </div>
+          <div class="card" id="card26" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 9</div>
+            <div class="card-q"><span class="frac"><span class="fn">4</span><span class="fd">5</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">4</span><span class="fd">5</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v26" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(26)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb26"></div>
+          </div>
+          <div class="card" id="card27" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 10</div>
+            <div class="card-q"><span class="frac"><span class="fn">3</span><span class="fd">4</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">5</span><span class="fd">12</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v27" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(27)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb27"></div>
+          </div>
+          <div class="card" id="card28" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 11</div>
+            <div class="card-q"><span class="frac"><span class="fn">1</span><span class="fd">2</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">1</span><span class="fd">4</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v28" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(28)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb28"></div>
+          </div>
+          <div class="card" id="card29" style="--cc:#7c3aed;--cl:#ede9fe;--cp:#f5f3ff;">
+            <div class="card-badge">½ 12</div>
+            <div class="card-q"><span class="frac"><span class="fn">1</span><span class="fd">3</span></span>&ensp;+&ensp;<span class="frac"><span class="fn">5</span><span class="fd">6</span></span>&ensp;=&ensp;?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v29" inputmode="text" placeholder="מונה/מכנה">
+        <button class="chk-btn" onclick="check(29)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb29"></div>
+          </div></div>
+        </section>
+        <section class="sec">
+          <div class="sec-hdr" style="background:#be123c;">📝&nbsp; בעיות מילוליות</div>
+          <div class="cards-grid">
+          <div class="card" id="card30" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 1</div>
+            <div class="card-q">סרט נמשך 81 דקות ומתחיל ב-18:00.<br>באיזו שעה הוא מסתיים? (כתוב שעה:דקות)</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v30" inputmode="text" placeholder="שעה:דקות">
+        <button class="chk-btn" onclick="check(30)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb30"></div>
+          </div>
+          <div class="card" id="card31" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 2</div>
+            <div class="card-q">יש 13 קופסאות, בכל קופסה 218 פריטים.<br>כמה פריטים יש בסך הכל?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v31" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(31)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb31"></div>
+          </div>
+          <div class="card" id="card32" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 3</div>
+            <div class="card-q">אוטובוס נוסע 177 ק״מ ביום.<br>כמה ק״מ יסע בתוך 13 ימים?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v32" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(32)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb32"></div>
+          </div>
+          <div class="card" id="card33" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 4</div>
+            <div class="card-q">רון רץ 682 מ׳ ביום א׳, 607 מ׳ ביום ב׳, 935 מ׳ ביום ג׳.<br>כמה מטרים רץ בסך הכל?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v33" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(33)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb33"></div>
+          </div>
+          <div class="card" id="card34" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 5</div>
+            <div class="card-q">יש 23 שקי חול, כל שק 19 ק״ג.<br>מה המשקל הכולל?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v34" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(34)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb34"></div>
+          </div>
+          <div class="card" id="card35" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 6</div>
+            <div class="card-q">בספרייה היו 17 584 ספרים. הושאלו 1 272 ספרים.<br>כמה ספרים נשארו?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v35" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(35)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb35"></div>
+          </div>
+          <div class="card" id="card36" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 7</div>
+            <div class="card-q">כרטיס לסרט עולה 38 ש״ח.<br>כמה ישלמו 26 ילדים?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v36" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(36)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb36"></div>
+          </div>
+          <div class="card" id="card37" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 8</div>
+            <div class="card-q">בחנות יש 1 350 ספרים בעברית ו-9 687 ספרים באנגלית.<br>כמה ספרים בסך הכל?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v37" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(37)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb37"></div>
+          </div>
+          <div class="card" id="card38" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 9</div>
+            <div class="card-q">יש 328 בקבוקים, 17 בכל קופסה.<br>כמה קופסאות שלמות יהיו?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v38" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(38)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb38"></div>
+          </div>
+          <div class="card" id="card39" style="--cc:#be123c;--cl:#ffe4e6;--cp:#fff1f2;">
+            <div class="card-badge">📝 10</div>
+            <div class="card-q">מחיר פריט 59 ש״ח, הנחה 20%.<br>כמה ישלם לאחר ההנחה?</div>
+            
+            
+      <div class="inp-row">
+        <input type="text" id="v39" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(39)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb39"></div>
+          </div></div>
+        </section>
+        <section class="sec">
+          <div class="sec-hdr" style="background:#0e7490;">📐&nbsp; גאומטריה</div>
+          <div class="cards-grid">
+          <div class="card" id="card40" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 1</div>
+            <div class="card-q">חשב היקף ושטח של המלבן</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><rect x="20" y="16" width="148" height="68" rx="3" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><text x="94" y="11" text-anchor="middle" font-size="12" fill="#1d4ed8" font-family="Heebo,Arial,sans-serif">8 ס״מ</text><text x="178" y="52" text-anchor="middle" font-size="12" fill="#1d4ed8" font-family="Heebo,Arial,sans-serif" transform="rotate(90,178,52)">4 ס״מ</text><text x="94" y="58" text-anchor="middle" font-size="15" fill="#1e40af" font-weight="bold" font-family="Heebo,Arial,sans-serif">?</text></svg>
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>היקף (ס״מ)</label>
+          <input type="text" id="v40a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שטח (ס״מ²)</label>
+          <input type="text" id="v40b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(40)">בדוק ✓</button>
+      <div class="fb" id="fb40"></div>
+          </div>
+          <div class="card" id="card41" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 2</div>
+            <div class="card-q">חשב היקף ושטח של הריבוע</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><rect x="46" y="9" width="86" height="86" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><text x="89" y="5" text-anchor="middle" font-size="12" fill="#15803d" font-family="Heebo,Arial,sans-serif">10 ס״מ</text><text x="140" y="54" text-anchor="middle" font-size="12" fill="#15803d" font-family="Heebo,Arial,sans-serif" transform="rotate(90,140,54)">10 ס״מ</text><text x="89" y="58" text-anchor="middle" font-size="15" fill="#166534" font-weight="bold" font-family="Heebo,Arial,sans-serif">?</text></svg>
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>היקף (ס״מ)</label>
+          <input type="text" id="v41a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>שטח (ס״מ²)</label>
+          <input type="text" id="v41b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(41)">בדוק ✓</button>
+      <div class="fb" id="fb41"></div>
+          </div>
+          <div class="card" id="card42" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 3</div>
+            <div class="card-q">חשב את היקף המשולש</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="95,8 22,92 168,92" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5"/><text x="95" y="6" text-anchor="middle" font-size="11" fill="#92400e" font-family="Heebo,Arial,sans-serif">4 ס״מ</text><text x="44" y="62" text-anchor="end" font-size="11" fill="#92400e" font-family="Heebo,Arial,sans-serif">8 ס״מ</text><text x="152" y="62" text-anchor="start" font-size="11" fill="#92400e" font-family="Heebo,Arial,sans-serif">9 ס״מ</text><text x="95" y="75" text-anchor="middle" font-size="13" fill="#78350f" font-weight="bold" font-family="Heebo,Arial,sans-serif">?</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v42" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(42)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb42"></div>
+          </div>
+          <div class="card" id="card43" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 4</div>
+            <div class="card-q">חשב שטח המקבילית</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="36,90 158,90 148,18 26,18" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/><text x="92" y="14" text-anchor="middle" font-size="12" fill="#6d28d9" font-family="Heebo,Arial,sans-serif">בסיס 8 ס״מ</text><line x1="148" y1="18" x2="148" y2="90" stroke="#7c3aed" stroke-width="1" stroke-dasharray="3,3"/><text x="163" y="58" text-anchor="start" font-size="11" fill="#7c3aed" font-family="Heebo,Arial,sans-serif">ג׳=9</text><text x="80" y="72" text-anchor="middle" font-size="11" fill="#4c1d95" font-family="Heebo,Arial,sans-serif">שטח = ?</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v43" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(43)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb43"></div>
+          </div>
+          <div class="card" id="card44" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 5</div>
+            <div class="card-q">חשב שטח המשולש</div>
+            <svg width="190" height="110" viewBox="0 0 190 110" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="28,90 152,90 28,18" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/><line x1="28" y1="18" x2="28" y2="90" stroke="#059669" stroke-width="1" stroke-dasharray="3,3"/><text x="90" y="103" text-anchor="middle" font-size="12" fill="#065f46" font-family="Heebo,Arial,sans-serif">בסיס 6 ס״מ</text><text x="15" y="57" text-anchor="middle" font-size="11" fill="#065f46" font-family="Heebo,Arial,sans-serif" transform="rotate(-90,15,57)">ג׳=10</text><text x="82" y="70" text-anchor="middle" font-size="11" fill="#064e3b" font-family="Heebo,Arial,sans-serif">שטח = ?</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v44" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(44)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb44"></div>
+          </div>
+          <div class="card" id="card45" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 6</div>
+            <div class="card-q">מה הזווית השלישית במשולש?</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="95,8 15,92 175,92" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/><text x="95" y="28" text-anchor="middle" font-size="12" fill="#dc2626" font-weight="bold" font-family="Heebo,Arial,sans-serif">?°</text><text x="30" y="84" text-anchor="start" font-size="11" fill="#b91c1c" font-family="Heebo,Arial,sans-serif">36°</text><text x="160" y="84" text-anchor="end" font-size="11" fill="#b91c1c" font-family="Heebo,Arial,sans-serif">27°</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v45" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(45)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb45"></div>
+          </div>
+          <div class="card" id="card46" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 7</div>
+            <div class="card-q">כמה מעלות בכל זווית של ריבוע?</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><rect x="40" y="9" width="84" height="84" rx="2" fill="#f1f5f9" stroke="#475569" stroke-width="1.5"/><path d="M40,25 L56,25 L56,9" fill="none" stroke="#475569" stroke-width="1.2"/><path d="M108,25 L124,25 L124,9" fill="none" stroke="#475569" stroke-width="1.2"/><path d="M40,77 L56,77 L56,93" fill="none" stroke="#475569" stroke-width="1.2"/><path d="M108,77 L124,77 L124,93" fill="none" stroke="#475569" stroke-width="1.2"/><text x="150" y="58" font-size="22" fill="#334155" text-anchor="middle" font-weight="bold" font-family="Heebo,Arial,sans-serif">?°</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v46" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(46)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb46"></div>
+          </div>
+          <div class="card" id="card47" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 8</div>
+            <div class="card-q">כמה צירי סימטריה: למלבן? לריבוע?</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><rect x="8" y="28" width="72" height="50" rx="2" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/><line x1="44" y1="20" x2="44" y2="86" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/><line x1="5" y1="53" x2="83" y2="53" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3"/><text x="44" y="100" text-anchor="middle" font-size="11" fill="#1d4ed8" font-family="Heebo,Arial,sans-serif">מלבן = ?</text><rect x="104" y="20" width="66" height="66" rx="2" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/><line x1="137" y1="12" x2="137" y2="94" stroke="#16a34a" stroke-width="1" stroke-dasharray="4,3"/><line x1="96" y1="53" x2="178" y2="53" stroke="#16a34a" stroke-width="1" stroke-dasharray="4,3"/><line x1="109" y1="25" x2="165" y2="81" stroke="#16a34a" stroke-width="1" stroke-dasharray="4,3"/><line x1="165" y1="25" x2="109" y2="81" stroke="#16a34a" stroke-width="1" stroke-dasharray="4,3"/><text x="137" y="100" text-anchor="middle" font-size="11" fill="#15803d" font-family="Heebo,Arial,sans-serif">ריבוע = ?</text></svg>
+            
+      <div class="multi-row">
+        <div class="inp-grp"><label>מלבן</label>
+          <input type="text" id="v47a" inputmode="numeric" placeholder="…"></div>
+        <div class="inp-grp"><label>ריבוע</label>
+          <input type="text" id="v47b" inputmode="numeric" placeholder="…"></div>
+      </div>
+      <button class="chk-btn" onclick="check(47)">בדוק ✓</button>
+      <div class="fb" id="fb47"></div>
+          </div>
+          <div class="card" id="card48" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 9</div>
+            <div class="card-q">כמה צלעות יש למשושה? ספור אותן</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="95,6 152,36 152,72 95,102 38,72 38,36" fill="#fef3c7" stroke="#d97706" stroke-width="1.8"/><text x="95" y="60" text-anchor="middle" font-size="13" fill="#78350f" font-weight="600" font-family="Heebo,Arial,sans-serif">משושה</text><text x="122" y="26" text-anchor="middle" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">1</text><text x="157" y="56" text-anchor="start" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">2</text><text x="122" y="90" text-anchor="middle" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">3</text><text x="66" y="90" text-anchor="middle" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">4</text><text x="28" y="56" text-anchor="end" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">5</text><text x="66" y="26" text-anchor="middle" font-size="10" fill="#92400e" font-family="Heebo,Arial,sans-serif">6</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v48" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(48)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb48"></div>
+          </div>
+          <div class="card" id="card49" style="--cc:#0e7490;--cl:#cffafe;--cp:#ecfeff;">
+            <div class="card-badge">📐 10</div>
+            <div class="card-q">כמה צלעות שוות יש למשולש שווה-שוקיים?</div>
+            <svg width="190" height="106" viewBox="0 0 190 106" xmlns="http://www.w3.org/2000/svg" class="ex-svg"><polygon points="48,9 12,92 84,92" fill="#d1fae5" stroke="#059669" stroke-width="1.5"/><text x="15" y="87" font-size="9" fill="#065f46" font-family="Heebo,Arial,sans-serif">6</text><text x="62" y="87" font-size="9" fill="#065f46" font-family="Heebo,Arial,sans-serif">6</text><text x="35" y="36" font-size="9" fill="#065f46" font-family="Heebo,Arial,sans-serif">6</text><text x="48" y="103" text-anchor="middle" font-size="10" fill="#065f46" font-family="Heebo,Arial,sans-serif">שווה-צלעות</text><polygon points="138,9 104,92 172,92" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5"/><text x="107" y="87" font-size="9" fill="#5b21b6" font-family="Heebo,Arial,sans-serif">3</text><text x="160" y="87" font-size="9" fill="#5b21b6" font-family="Heebo,Arial,sans-serif">3</text><text x="126" y="36" font-size="9" fill="#5b21b6" font-family="Heebo,Arial,sans-serif">5</text><text x="138" y="103" text-anchor="middle" font-size="10" fill="#5b21b6" font-family="Heebo,Arial,sans-serif">שווה-שוקיים</text></svg>
+            
+      <div class="inp-row">
+        <input type="text" id="v49" inputmode="numeric" placeholder="0">
+        <button class="chk-btn" onclick="check(49)">בדוק ✓</button>
+      </div>
+      <div class="fb" id="fb49"></div>
+          </div></div>
+        </section>
+
+  <div class="finish-wrap">
+    <button class="finish-btn" onclick="showScore()">הצג ציון 🎓</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="score-emoji" id="sEmoji">🎓</div>
+    <div class="score-num"  id="sNum">—</div>
+    <div class="score-grade" id="sGrade"></div>
+    <div class="score-stats" id="sStats"></div>
+    <div class="score-msg"   id="sMsg"></div>
+    <button class="modal-close" onclick="document.getElementById('overlay').classList.remove('open')">סגור</button>
+  </div>
+</div>
+
+<script>
+const EXDATA = [{"id": 0, "kind": "number", "ans": "69000"}, {"id": 1, "kind": "number", "ans": "502122"}, {"id": 2, "kind": "number", "ans": "817586"}, {"id": 3, "kind": "number", "ans": "121661"}, {"id": 4, "kind": "number", "ans": "661745"}, {"id": 5, "kind": "number", "ans": "198205"}, {"id": 6, "kind": "number", "ans": "63825"}, {"id": 7, "kind": "number", "ans": "58780"}, {"id": 8, "kind": "multi2", "ans": ["53", "4"]}, {"id": 9, "kind": "multi2", "ans": ["12", "6"]}, {"id": 10, "kind": "number", "ans": "657"}, {"id": 11, "kind": "multi2", "ans": ["47", "2"]}, {"id": 12, "kind": "multi2", "ans": ["50", "2"]}, {"id": 13, "kind": "number", "ans": "628"}, {"id": 14, "kind": "multi2", "ans": ["157", "1"]}, {"id": 15, "kind": "number", "ans": "786"}, {"id": 16, "kind": "multi2", "ans": ["46", "2"]}, {"id": 17, "kind": "number", "ans": "796"}, {"id": 18, "kind": "symbol", "ans": "<"}, {"id": 19, "kind": "symbol", "ans": ">"}, {"id": 20, "kind": "symbol", "ans": "<"}, {"id": 21, "kind": "symbol", "ans": ">"}, {"id": 22, "kind": "symbol", "ans": ">"}, {"id": 23, "kind": "symbol", "ans": ">"}, {"id": 24, "kind": "fraction", "ans": "1"}, {"id": 25, "kind": "fraction", "ans": "6/5"}, {"id": 26, "kind": "fraction", "ans": "8/5"}, {"id": 27, "kind": "fraction", "ans": "7/6"}, {"id": 28, "kind": "fraction", "ans": "3/4"}, {"id": 29, "kind": "fraction", "ans": "7/6"}, {"id": 30, "kind": "time", "ans": "19:21"}, {"id": 31, "kind": "number", "ans": "2834"}, {"id": 32, "kind": "number", "ans": "2301"}, {"id": 33, "kind": "number", "ans": "2224"}, {"id": 34, "kind": "number", "ans": "437"}, {"id": 35, "kind": "number", "ans": "16312"}, {"id": 36, "kind": "number", "ans": "988"}, {"id": 37, "kind": "number", "ans": "11037"}, {"id": 38, "kind": "number", "ans": "19"}, {"id": 39, "kind": "number", "ans": "48"}, {"id": 40, "kind": "multi2", "ans": ["24", "32"]}, {"id": 41, "kind": "multi2", "ans": ["40", "100"]}, {"id": 42, "kind": "number", "ans": "21"}, {"id": 43, "kind": "number", "ans": "72"}, {"id": 44, "kind": "number", "ans": "30"}, {"id": 45, "kind": "number", "ans": "117"}, {"id": 46, "kind": "number", "ans": "90"}, {"id": 47, "kind": "multi2", "ans": ["2", "4"]}, {"id": 48, "kind": "number", "ans": "6"}, {"id": 49, "kind": "number", "ans": "2"}];
+const TOTAL  = 50;
+const checked = {};
+
+/* ── answer normalisation ── */
+function nNum(s){ return parseInt(String(s).replace(/[\s,]/g,''),10); }
+function nFrac(s){
+  s = s.trim();
+  if(!s) return NaN;
+  if(s.includes('/')){ const [a,b]=s.split('/'); return Number(a)/Number(b); }
+  return Number(s);
+}
+function nTime(s){ return s.trim().replace(/\s+/g,''); }
+
+function isCorrect(ex, raw){
+  switch(ex.kind){
+    case 'number':  return nNum(raw)===nNum(ex.ans);
+    case 'fraction':return Math.abs(nFrac(raw)-nFrac(ex.ans))<0.0015;
+    case 'symbol':  return raw.trim()===ex.ans;
+    case 'time':    return nTime(raw)===nTime(ex.ans);
+    case 'multi2':{
+      const [a,b]=raw.split('|');
+      return nNum(a)===nNum(ex.ans[0]) && nNum(b)===nNum(ex.ans[1]);
+    }
+  }
+  return false;
+}
+
+/* ── check single exercise ── */
+function check(gid){
+  const ex   = EXDATA.find(e=>e.id===gid);
+  const card = document.getElementById('card'+gid);
+  const fb   = document.getElementById('fb'+gid);
+  let raw;
+  if(ex.kind==='multi2'){
+    raw = (document.getElementById('v'+gid+'a')?.value||'')+'|'+(document.getElementById('v'+gid+'b')?.value||'');
+  }else{
+    raw = document.getElementById('v'+gid)?.value||'';
+  }
+  const ok = isCorrect(ex, raw);
+  checked[gid] = ok;
+  card.className = 'card '+(ok?'correct':'wrong');
+  if(ok){
+    fb.className='fb ok';
+    fb.innerHTML='&#x2705; נכון! כל הכבוד! &#127775;';
+  }else{
+    fb.className='fb err';
+    let disp = Array.isArray(ex.ans) ? ex.ans.join(' | ') : ex.ans;
+    fb.innerHTML='&#x274C; לא נכון &mdash; תשובה נכונה: <strong>'+disp+'</strong>';
+  }
+  updateProgress();
+}
+
+/* ── symbol selector ── */
+function setSym(gid, btn, sym){
+  document.querySelectorAll('#card'+gid+' .sym-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  document.getElementById('v'+gid).value=sym;
+}
+
+/* ── progress bar ── */
+function updateProgress(){
+  const n = Object.keys(checked).length;
+  document.getElementById('pnum').textContent = n;
+  document.getElementById('pbar').style.width = (n/TOTAL*100)+'%';
+}
+
+/* ── final score ── */
+function showScore(){
+  const correct = Object.values(checked).filter(Boolean).length;
+  const score   = Math.round(correct/TOTAL*100);
+  let emoji, grade, msg, bg;
+  if(score>=95){emoji='🏆';grade='מצוין מאוד!';      msg='ביצועים מדהימים! אתה מתמטיקאי אמיתי! ✨';      bg='#f0fdf4';}
+  else if(score>=85){emoji='⭐';grade='מצוין!';        msg='עבודה נהדרת! ממשיך ככה! 💪';                   bg='#eff6ff';}
+  else if(score>=75){emoji='😊';grade='טוב מאוד';      msg='תוצאה יפה! עוד קצת ותגיע למצוין!';            bg='#fefce8';}
+  else if(score>=65){emoji='👍';grade='טוב';           msg='טוב! כדאי לחזור על הנושאים שטעית בהם. 📚';    bg='#fff7ed';}
+  else if(score>=55){emoji='😐';grade='מספיק';         msg='יש מקום לשיפור. תתאמץ יותר בפעם הבאה! 🔄';   bg='#fef2f2';}
+  else{emoji='💪';grade='צריך לחזור על החומר';         msg='אל תתייאש! כל טעות היא הזדמנות ללמוד. 🌱';   bg='#fef2f2';}
+
+  document.getElementById('sEmoji').textContent  = emoji;
+  document.getElementById('sNum').textContent    = score;
+  document.getElementById('sGrade').textContent  = grade;
+  document.getElementById('sStats').textContent  = correct+' נכון מתוך '+TOTAL+' שאלות';
+  const m = document.getElementById('sMsg');
+  m.textContent  = msg;
+  m.style.background = bg;
+  document.getElementById('overlay').classList.add('open');
+}
+
+/* ── Enter key → check ── */
+document.addEventListener('keydown', e=>{
+  if(e.key!=='Enter') return;
+  const el = document.activeElement;
+  if(!el || el.tagName!=='INPUT') return;
+  const m = el.id.match(/^v(\d+)/);
+  if(m) check(parseInt(m[1]));
+});
+</script>
+</body>
+</html>
